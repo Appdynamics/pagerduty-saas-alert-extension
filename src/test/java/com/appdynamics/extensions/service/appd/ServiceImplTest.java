@@ -29,27 +29,6 @@ public class ServiceImplTest {
 
     IService service = new ServiceImpl();
 
-    //#TODO remove the below call
-    @Test
-    public void testGetApplicationsCall(){
-        //  List<Application> applications = service.getApplications(true,"adppe.saas.appdynamics.com/controller/rest/applications","singularity-agent@adppe","2942e720051c",10000,10000);
-        // Assert.assertNotNull(applications);
-    }
-
-    //#TODO remove the below call
-    @Test
-    public void testHealthRuleViolationsCall(){
-        ServiceBuilder sb = new ServiceBuilder(true,"singularity-agent@adppe","2942e720051c",10000,10000);
-        List<PolicyViolation> violations = service.getHealthRuleViolations(sb,"https://adppe.saas.appdynamics.com/controller/rest/applications/1706/problems/healthrule-violations?time-range-type=BEFORE_NOW&duration-in-mins=3600&output=XML");
-        Assert.assertTrue(violations.size() != 0);
-    }
-
-    @Test
-    public void testEventsCall(){
-        ServiceBuilder sb = new ServiceBuilder(true,"singularity-agent@adppe","2942e720051c",10000,10000);
-        List<Event> violations = service.getEvents(sb,"https://adppe.saas.appdynamics.com/controller/rest/applications/1706/events?time-range-type=BEFORE_NOW&duration-in-mins=3600&event-types=APPLICATION_ERROR,DIAGNOSTIC_SESSION&severities=ERROR&output=XML");
-        Assert.assertTrue(violations.size() != 0);
-    }
 
     @Test(expected = ServiceException.class)
     public void testGetApplicationsCallShouldThrowExceptionForIncorrectXmlResponse(){
