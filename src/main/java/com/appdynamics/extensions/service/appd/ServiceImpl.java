@@ -91,21 +91,4 @@ public class ServiceImpl implements IService {
         return Lists.newArrayList();
     }
 
-
-
-
-//
-//    private String buildTargetUrl(boolean isSSLEnabled,String endpoint) {
-//        StringBuilder sb = new StringBuilder();
-//        if(isSSLEnabled){
-//            sb.append(HTTPS);
-//        }
-//        else{
-//            sb.append(HTTP);
-//        }
-//        sb.append(COLON).append(FORWARD_SLASH)
-//                .append(FORWARD_SLASH)
-//                .append(endpoint);
-//        return sb.toString();
-//    }
 }

@@ -1,18 +1,22 @@
 package com.appdynamics.extensions.config;
 
 
+import com.appdynamics.extensions.config.customer.PagerDutyConfig;
+
 public class Configuration {
 
+    private String userAccount;
+    private String password;
+    private String saasHost;
     private String protocol;
     private String applicationsUrlPath;
     private String healthRuleViolationsUrlPath;
     private String eventsUrlPath;
     private int connectTimeout;
     private int socketTimeout;
-    private int scheduleInterval;
-    private int numberOfThreads;
-    private int threadTimeout;
+    private int durationInMins;
 
+    private PagerDutyConfig pagerDutyConfig;
 
     public int getSocketTimeout() {
         return socketTimeout;
@@ -62,28 +66,43 @@ public class Configuration {
         this.eventsUrlPath = eventsUrlPath;
     }
 
-
-    public int getScheduleInterval() {
-        return scheduleInterval;
+    public String getUserAccount() {
+        return userAccount;
     }
 
-    public void setScheduleInterval(int scheduleInterval) {
-        this.scheduleInterval = scheduleInterval;
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
     }
 
-    public int getNumberOfThreads() {
-        return numberOfThreads;
+    public String getPassword() {
+        return password;
     }
 
-    public void setNumberOfThreads(int numberOfThreads) {
-        this.numberOfThreads = numberOfThreads;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public int getThreadTimeout() {
-        return threadTimeout;
+    public String getSaasHost() {
+        return saasHost;
     }
 
-    public void setThreadTimeout(int threadTimeout) {
-        this.threadTimeout = threadTimeout;
+    public void setSaasHost(String saasHost) {
+        this.saasHost = saasHost;
+    }
+
+    public PagerDutyConfig getPagerDutyConfig() {
+        return pagerDutyConfig;
+    }
+
+    public void setPagerDutyConfig(PagerDutyConfig pagerDutyConfig) {
+        this.pagerDutyConfig = pagerDutyConfig;
+    }
+
+    public int getDurationInMins() {
+        return durationInMins;
+    }
+
+    public void setDurationInMins(int durationInMins) {
+        this.durationInMins = durationInMins;
     }
 }

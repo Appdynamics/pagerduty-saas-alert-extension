@@ -5,7 +5,6 @@ import com.appdynamics.extensions.alerts.customevents.EvaluationEntity;
 import com.appdynamics.extensions.alerts.customevents.Event;
 import com.appdynamics.extensions.alerts.customevents.HealthRuleViolationEvent;
 import com.appdynamics.extensions.config.Configuration;
-import com.appdynamics.extensions.config.customer.Customer;
 import com.appdynamics.extensions.http.Response;
 import com.appdynamics.extensions.service.appd.IService;
 import com.appdynamics.extensions.service.appd.ServiceBuilder;
@@ -23,52 +22,46 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
 
-public class CustomerTask implements Callable<Void> {
+public class CustomerTask {
 
     private Configuration baseConfig;
-    private Customer customer;
     private IService service;
     private EndpointBuilder endpointBuilder = new EndpointBuilder();
     private AlertBuilder alertBuilder = new AlertBuilder();
 
     private static Logger logger = Logger.getLogger(CustomerTask.class);
 
-    public CustomerTask(Configuration baseConfig, Customer customer,IService service){
+    public CustomerTask(Configuration baseConfig, IService service){
         this.baseConfig = baseConfig;
-        this.customer = customer;
         this.service = service;
     }
 
-    @Override
-    public Void call() throws Exception {
-        ServiceBuilder builder = new ServiceBuilder(true,customer.getUserAccount(),customer.getPassword(),baseConfig.getConnectTimeout() * 1000,baseConfig.getSocketTimeout() * 1000);
+    public void execute() throws Exception {
+        ServiceBuilder builder = new ServiceBuilder(true,baseConfig.getUserAccount(),baseConfig.getPassword(),baseConfig.getConnectTimeout() * 1000,baseConfig.getSocketTimeout() * 1000);
         try {
             //get all applications for customer
-            String appEndpoint = endpointBuilder.buildApplicationsEndpoint(baseConfig, customer);
+            String appEndpoint = endpointBuilder.buildApplicationsEndpoint(baseConfig);
             logger.debug("Get Applications Call :" + appEndpoint);
             List<Application> applications = service.getApplications(builder, appEndpoint);
             List<Event> allEvents = new ArrayList<Event>();
             addHealthRuleViolationEvents(builder, applications, allEvents);
-            //   addOtherEvents(builder,applications,allEvents);
+            //addOtherEvents(builder,applications,allEvents);
             //send to pagerduty
-            sendToPagerDuty(allEvents, customer);
+            sendToPagerDuty(allEvents);
         }
         catch (ServiceException e){
             logger.error("Service Exception." + e);
             throw e;
         }
-
-        return null;
     }
 
-    private void sendToPagerDuty(List<Event> allEvents, Customer customer) {
+    private void sendToPagerDuty(List<Event> allEvents) {
         for(Event event : allEvents){
             Alert alert = null;
             if(event instanceof HealthRuleViolationEvent) {
                 HealthRuleViolationEvent violationEvent = (HealthRuleViolationEvent) event;
-                alert = alertBuilder.buildAlertFromHealthRuleViolationEvent(violationEvent, customer.getPagerDutyConfig().getServiceKey());
+                alert = alertBuilder.buildAlertFromHealthRuleViolationEvent(violationEvent, baseConfig.getPagerDutyConfig().getServiceKey());
             }
 //            else{
 //                OtherEvent otherEvent = (OtherEvent) event;
@@ -76,7 +69,7 @@ public class CustomerTask implements Callable<Void> {
 //            }
             if (alert != null) {
                 try {
-                    HttpHandler handler = new HttpHandler(customer);
+                    HttpHandler handler = new HttpHandler(baseConfig);
                     String json = alertBuilder.convertIntoJsonString(alert);
                     logger.debug("Json posted to VO ::" + json);
                     Response response = handler.postAlert(json);
@@ -95,7 +88,7 @@ public class CustomerTask implements Callable<Void> {
 
     private void addHealthRuleViolationEvents(ServiceBuilder builder, List<Application> applications, List<Event> allEvents) {
         for(Application app : applications){
-            String hrvEndpoint = endpointBuilder.buildHealthRulesViolationEndpoint(baseConfig, customer, app.getId());
+            String hrvEndpoint = endpointBuilder.buildHealthRulesViolationEndpoint(baseConfig, app.getId());
             logger.debug("Get Health Rule Violations Endpoint: " + hrvEndpoint);
             List<PolicyViolation> healthViolations = service.getHealthRuleViolations(builder, hrvEndpoint);
             List<HealthRuleViolationEvent> hrvEvents = translate(app,healthViolations);

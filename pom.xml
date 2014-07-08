@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.appdynamics.extensions</groupId>
-    <artifactId>saas-pagerduty-alert</artifactId>
+    <artifactId>pagerduty-saas-alert-extension</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
     <properties>
@@ -16,6 +16,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.appdynamics</groupId>
+            <artifactId>machine-agent</artifactId>
+            <version>3.7.11</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -69,6 +75,7 @@
             <version>1.9.5</version>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>${project.artifactId}</finalName>
         <resources>
@@ -84,38 +91,12 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>install</id>
-                        <phase>install</phase>
-                        <configuration>
-                            <target>
-                                <mkdir dir="${target.dir}" />
-                                <mkdir dir="${target.dir}/conf" />
-                                <copy todir="${target.dir}/conf">
-                                    <fileset dir="conf" />
-                                </copy>
-                                <copy todir="${target.dir}">
-                                    <fileset dir="src/main/resources" includes="*.bat,*.sh, *.txt" />
-                                </copy>
-                                <copy todir="${target.dir}">
-                                    <fileset dir="${build.directory}" includes="${project.artifactId}.${project.packaging}"/>
-                                </copy>
-
-                                <zip destfile="${target.dir}.zip">
-                                    <zipfileset dir="${target.dir}" filemode="755"
-                                        prefix="saas-pagerduty-alert/" />
-                                </zip>
-                                <delete dir="${target.dir}"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -142,19 +123,51 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer
-                                    implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                                <transformer
-                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>com.appdynamics.extensions.pagerduty.PagerDutyAlertExtension</Main-Class>
-                                        <Implementation-Title>PagerDuty-Alert-Extension v${project.version} Date ${maven.build.timestamp}</Implementation-Title>
+                                        <Implementation-Title>Pagerduty saas Alert Extension v${project.version} Build Date ${maven.build.timestamp}</Implementation-Title>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>install</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <target>
+                                <mkdir dir="${target.dir}"/>
+                                <copy todir="${target.dir}">
+                                    <fileset dir="src/main/resources/conf" includes="monitor.xml"/>
+                                    <fileset dir="src/main/resources/conf" includes="config.yml"/>
+                                </copy>
+                                <copy todir="${target.dir}">
+                                    <fileset dir="${build.directory}" includes="${project.artifactId}.${project.packaging}"/>
+                                </copy>
+                                <zip destfile="${target.dir}.zip">
+                                    <zipfileset dir="${target.dir}" filemode="755" prefix="PagerdutySaasAlertExtension/"/>
+                                </zip>
+                                <delete dir="${target.dir}"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.1</version>
             </plugin>
             <plugin>
                 <artifactId>maven-scm-plugin</artifactId>
@@ -165,6 +178,7 @@
             </plugin>
         </plugins>
     </build>
+
     <repositories>
         <repository>
             <id>github-maven-repo</id>
@@ -178,7 +192,7 @@
         </repository>
     </repositories>
     <scm>
-        <connection>scm:git:https://github.com/Appdynamics/saas-pagerduty-extension.git</connection>
+        <connection>scm:git:https://github.com/Appdynamics/pagerduty-saas-alert-extension</connection>
     </scm>
 
 </project>

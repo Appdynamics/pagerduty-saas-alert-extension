@@ -1,6 +1,6 @@
 package com.appdynamics.extensions.service.pagerduty;
 
-import com.appdynamics.extensions.config.customer.Customer;
+import com.appdynamics.extensions.config.Configuration;
 import com.appdynamics.extensions.http.Response;
 import com.appdynamics.extensions.http.SimpleHttpClient;
 import org.apache.log4j.Logger;
@@ -17,11 +17,11 @@ public class HttpHandler {
     public static final String COLON = ":";
     public static final String FORWARD_SLASH = "/";
 
-    private Customer customer;
+    private Configuration config;
     private static Logger logger = Logger.getLogger(HttpHandler.class);
 
-    public HttpHandler(Customer customer){
-        this.customer = customer;
+    public HttpHandler(Configuration config){
+        this.config = config;
     }
 
     /**
@@ -33,8 +33,8 @@ public class HttpHandler {
         Map<String, String> httpConfigMap = createHttpConfigMap();
         logger.debug("Building the httpClient for pagerduty post");
         SimpleHttpClient simpleHttpClient = SimpleHttpClient.builder(httpConfigMap)
-                .connectionTimeout(customer.getPagerDutyConfig().getConnectTimeout() * 1000)
-                .socketTimeout(customer.getPagerDutyConfig().getSocketTimeout() * 1000)
+                .connectionTimeout(config.getPagerDutyConfig().getConnectTimeout() * 1000)
+                .socketTimeout(config.getPagerDutyConfig().getSocketTimeout() * 1000)
                 .build();
         String targetUrl = buildTargetUrl();
         logger.debug("Posting data to VO at " + targetUrl);
@@ -55,7 +55,7 @@ public class HttpHandler {
     }
 
     private boolean isSSLEnabled() {
-        return customer.getPagerDutyConfig().getProtocol().equalsIgnoreCase(HTTPS);
+        return config.getPagerDutyConfig().getProtocol().equalsIgnoreCase(HTTPS);
     }
 
 
@@ -70,8 +70,8 @@ public class HttpHandler {
         }
         sb.append(COLON).append(FORWARD_SLASH)
                 .append(FORWARD_SLASH)
-                .append(customer.getPagerDutyConfig().getHost())
-                .append(customer.getPagerDutyConfig().getUrlPath());
+                .append(config.getPagerDutyConfig().getHost())
+                .append(config.getPagerDutyConfig().getUrlPath());
 
         return sb.toString();
     }

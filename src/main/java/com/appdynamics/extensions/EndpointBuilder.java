@@ -2,7 +2,6 @@ package com.appdynamics.extensions;
 
 
 import com.appdynamics.extensions.config.Configuration;
-import com.appdynamics.extensions.config.customer.Customer;
 
 public class EndpointBuilder {
 
@@ -10,32 +9,32 @@ public class EndpointBuilder {
     public static final String APP_ID_HOLDER = "<#APP_ID#>";
     public static final String POLLING_FREQ_IN_MINS_HOLDER = "<#POLLING_FREQ_IN_MINS#>";
 
-    public String buildApplicationsEndpoint(Configuration baseConfig, Customer customer) {
-        StringBuffer sb = getHost(customer).append(baseConfig.getApplicationsUrlPath());
+    public String buildApplicationsEndpoint(Configuration baseConfig) {
+        StringBuffer sb = getHost(baseConfig).append(baseConfig.getApplicationsUrlPath());
         return sb.toString();
     }
 
-    public String buildHealthRulesViolationEndpoint(Configuration baseConfig, Customer customer, int applicationId) {
-        StringBuffer sb = getHost(customer);
+    public String buildHealthRulesViolationEndpoint(Configuration baseConfig,int applicationId) {
+        StringBuffer sb = getHost(baseConfig);
         sb.append(baseConfig.getHealthRuleViolationsUrlPath());
-        return replacePlaceHolders(sb.toString(),applicationId,baseConfig.getScheduleInterval());
+        return replacePlaceHolders(sb.toString(),applicationId,baseConfig.getDurationInMins());
     }
 
 
-    public String buildEventsEndpoint(Configuration baseConfig, Customer customer,int applicationId) {
-        StringBuffer sb = getHost(customer);
+    public String buildEventsEndpoint(Configuration baseConfig,int applicationId) {
+        StringBuffer sb = getHost(baseConfig);
         sb.append(baseConfig.getEventsUrlPath());
-        return replacePlaceHolders(sb.toString(),applicationId,baseConfig.getScheduleInterval());
+        return replacePlaceHolders(sb.toString(),applicationId,baseConfig.getDurationInMins());
     }
 
-    private StringBuffer getHost(Customer customer){
+    private StringBuffer getHost(Configuration baseConfig){
         StringBuffer sb = new StringBuffer();
-        sb.append(HTTPS).append(customer.getSaasHost());
+        sb.append(HTTPS).append(baseConfig.getSaasHost());
         return sb;
     }
 
     private String replacePlaceHolders(String str, int applicationId, int delaySchedule) {
-        return str.replace(APP_ID_HOLDER,Integer.toString(applicationId)).replace(POLLING_FREQ_IN_MINS_HOLDER,Integer.toString(delaySchedule / 60));
+        return str.replace(APP_ID_HOLDER,Integer.toString(applicationId)).replace(POLLING_FREQ_IN_MINS_HOLDER,Integer.toString(delaySchedule));
     }
 
 }
