@@ -2,7 +2,7 @@ pagerduty-saas-alert-extension
 ==========================
 
 An AppDynamics extension for SAAS customers only to be used with a stand alone Java machine agent to integrate AppDynamic's controller events
-to PagerDuty. #This extension is for SAAS customers only#. For on-prem pager duty extension visit [here](http://community.appdynamics.com/t5/AppDynamics-eXchange/PagerDuty-Alerting-Extension/idi-p/747).
+to PagerDuty. #This extension is for SAAS customers only#. For on-prem pager duty extension visit [here](http://community.appdynamics.com/t5/AppDynamics-eXchange/PagerDuty-Alerting-Extension/idi-p/747) #.
 
 
 ## Use Case ##
