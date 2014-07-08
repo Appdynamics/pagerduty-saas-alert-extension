@@ -27,7 +27,7 @@ With the PagerDuty integration you can leverage your existing alerting infrastru
 
 Note : Please make sure to not use tab (\t) while editing yaml files. You may want to validate the yaml file using a [yaml validator](http://yamllint.com/)
 
-1. Configure the AppDynamics SaaS settings namely userAccount,password,saasHost and PagerDuty's serviceKey in the config.yaml file in `<MACHINE_AGENT_HOME>/monitors/PagerdutySaasAlertExtension/`.
+1. Configure the AppDynamics SaaS settings namely **userAccount**,**password**,**saasHost** and PagerDuty's **serviceKey** in the config.yaml file in `<MACHINE_AGENT_HOME>/monitors/PagerdutySaasAlertExtension/`.
 
    For eg.
 
