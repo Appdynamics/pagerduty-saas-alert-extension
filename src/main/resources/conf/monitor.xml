@@ -20,4 +20,4 @@
             <impl-class>com.appdynamics.extensions.PagerDutyAlertExtension</impl-class>
         </java-task>
     </monitor-run-task>
-</monitor>cd
+</monitor>
