@@ -13,7 +13,7 @@
         <execution-timeout-in-secs>60</execution-timeout-in-secs>
         <task-arguments>
             <!-- config file-->
-            <argument name="config-file" is-required="true" default-value="monitors/PagerdutySaasAlertExtension/config.yml" />
+            <argument name="config-file" is-required="true" default-value="monitors/PagerdutySaasAlertExtension/config.yaml" />
         </task-arguments>
         <java-task>
             <classpath>pagerduty-saas-alert-extension.jar</classpath>

@@ -25,9 +25,6 @@ public class PagerDutyAlertExtension extends AManagedMonitor {
     private ExecutorService threadPool;
 
     public static final String CONFIG_ARG = "config-file";
-    public static final String CONFIG_FILENAME =  "." + File.separator + "conf" + File.separator + "config.yaml";
-    private static final int DEFAULT_NUMBER_OF_THREADS = 10;
-    public static final int DEFAULT_THREAD_TIMEOUT = 10;
 
     //To load the config files
     final static ConfigUtil<Configuration> configUtil = new ConfigUtil<Configuration>();
