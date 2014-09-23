@@ -25,12 +25,7 @@ public class AlertBuilder {
             Alert alert = new Alert();
             alert.setServiceKey(serviceKey);
             alert.setIncidentKey(getIncidentKey(violationEvent));
-            if(violationEvent.getEventType().equalsIgnoreCase("RESOLVED")){
-                alert.setEventType(RESOLVE);
-            }
-            else{
-                alert.setEventType(TRIGGER);
-            }
+            alert.setEventType(getEventType(violationEvent.getEventType()));
             setSeverity(violationEvent.getSeverity(),violationEvent);
             alert.setDetails(getSummary(violationEvent,Boolean.valueOf(true)));
             alert.setDescription(getDescription(violationEvent));
@@ -45,9 +40,18 @@ public class AlertBuilder {
         }
         else if(severity.equalsIgnoreCase("INFO")){
             event.setSeverity("INFORMATION");
+        }else if (severity.equalsIgnoreCase("ERROR")) {
+            event.setSeverity("CRITICAL");
         }
     }
 
+
+    private String getEventType(String eventType){
+        if(eventType != null && eventType.equalsIgnoreCase(POLICY_CLOSE)){
+            return RESOLVE;
+        }
+        return TRIGGER;
+    }
 
 
     public Alert buildAlertFromOtherEvent(OtherEvent otherEvent, String serviceKey) {

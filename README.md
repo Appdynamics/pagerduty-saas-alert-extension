@@ -32,7 +32,8 @@ Note : Please make sure to not use tab (\t) while editing yaml files. You may wa
    For eg.
 
    ```
-        #AppDynamics user account information for the SAAS customer. Format is <appdynamics-username>@<appdynamics-account-name>
+        #AppDynamics user account information for the SAAS customer.
+        #Format is <appdynamics-username>@<appdynamics-account-name>
         userAccount: ""
 
         #AppDynamics password for SAAS customer
@@ -106,9 +107,10 @@ Find out more in the [AppDynamics Exchange][].
 
 For any questions or feature request, please contact [AppDynamics Center of Excellence][].
 
-**Version:** 1.0.0
+**Version:** 1.0.1
 **Controller Compatibility:** 3.7+
 
 [Github]: https://github.com/Appdynamics/pagerduty-saas-alert-extension
 [AppDynamics Exchange]: http://community.appdynamics.com/t5/AppDynamics-eXchange/idb-p/extensions
-[AppDynamics Center of Excellence]: mailto:ace-request@appdynamics.com
+[AppDynamics Center of Excellence]: mailto:help@appdynamics.com
+
