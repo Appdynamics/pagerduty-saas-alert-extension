@@ -4,6 +4,7 @@ package com.appdynamics.extensions;
 import com.appdynamics.extensions.alerts.customevents.EvaluationEntity;
 import com.appdynamics.extensions.alerts.customevents.Event;
 import com.appdynamics.extensions.alerts.customevents.HealthRuleViolationEvent;
+import com.appdynamics.extensions.alerts.customevents.OtherEvent;
 import com.appdynamics.extensions.config.Configuration;
 import com.appdynamics.extensions.http.Response;
 import com.appdynamics.extensions.service.appd.IService;
@@ -63,10 +64,10 @@ public class CustomerTask {
                 HealthRuleViolationEvent violationEvent = (HealthRuleViolationEvent) event;
                 alert = alertBuilder.buildAlertFromHealthRuleViolationEvent(violationEvent, baseConfig.getPagerDutyConfig().getServiceKey());
             }
-//            else{
-//                OtherEvent otherEvent = (OtherEvent) event;
-//                alert = alertBuilder.buildAlertFromOtherEvent(otherEvent,config);
-//            }
+            else{
+                OtherEvent otherEvent = (OtherEvent) event;
+                alert = alertBuilder.buildAlertFromOtherEvent(otherEvent,baseConfig.getPagerDutyConfig().getServiceKey());
+            }
             if (alert != null) {
                 try {
                     HttpHandler handler = new HttpHandler(baseConfig);

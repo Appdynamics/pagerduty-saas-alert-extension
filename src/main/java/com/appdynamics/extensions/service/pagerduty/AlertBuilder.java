@@ -84,23 +84,7 @@ public class AlertBuilder {
         return otherEvent.getAppID() + DASH + otherEvent.getEventNotificationId();
     }
 
-    private String getEventTypes(OtherEvent otherEvent) {
-        StringBuffer sb = new StringBuffer();
-        for(EventType type : otherEvent.getEventTypes()){
-            sb.append(type.getEventType());
-            sb.append(",");
-        }
-        return sb.toString();
-    }
 
-    private String getEventSummaries(OtherEvent otherEvent) {
-        StringBuffer sb = new StringBuffer();
-        for(EventSummary summary : otherEvent.getEventSummaries()){
-            sb.append(summary.getEventSummaryString());
-            sb.append(",");
-        }
-        return sb.toString();
-    }
 
 
     public String convertIntoJsonString(Alert alert) throws JsonProcessingException {
@@ -110,12 +94,7 @@ public class AlertBuilder {
 
 
 
-    private String getAlertUrl(OtherEvent otherEvent) {
-        if(otherEvent.getEventSummaries().get(0)  != null) {
-            return otherEvent.getDeepLinkUrl() + otherEvent.getEventSummaries().get(0).getEventSummaryId();
-        }
-        return null;
-    }
+
 
 
 
@@ -202,10 +181,6 @@ public class AlertBuilder {
 
 
 
-
-    private String getEntityDisplayName(OtherEvent otherEvent) {
-        return otherEvent.getAppName()  + SLASH_SEPARATOR + otherEvent.getEventNotificationName();
-    }
 
 
 
